@@ -41,22 +41,20 @@ body {
   background: rgba(255,255,255,0.3);
   cursor: grabbing;
   cursor: -webkit-grabbing;
-  transform: scale(1);
+  transition:transform 0.2 ease;
 }
 
 .item {
   width: 200px;
-  height: 200px;
-  display: flex;
-  justify-content: center;
+  height: calc(100% - 40px);
+  display: inline-flex;
   align-items: center;
-  position: absolute; /* <--- This is crucial */
+  justify-content: center;
   font-size: 80px;
   font-weight: 100;
-  color: rgba(0, 0, 0, 0.15);
-  box-shadow: inset 0 0 0 10px rgba(0, 0, 0, 0.15);
+  color: rgba(0,0,0,0.15);
+  box-shadow: inset 0 0 0 10px rgba(0,0,0,0.15);
 }
-
 
 .item:nth-child(9n+1) { background: dodgerblue;}
 .item:nth-child(9n+2) { background: goldenrod;}
@@ -68,6 +66,5 @@ body {
 .item:nth-child(9n+8) { background: darkslateblue;}
 .item:nth-child(9n+9) { background: rebeccapurple;}
 
-/* .item:nth-child(even) { transform: scaleX(1.31) rotateY(40deg); }
+.item:nth-child(even) { transform: scaleX(1.31) rotateY(40deg); }
 .item:nth-child(odd) { transform: scaleX(1.31) rotateY(-40deg); }
- */
