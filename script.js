@@ -25,6 +25,6 @@ container.addEventListener('mousemove', (e) => {
   if (!isDown) return;
   e.preventDefault();
   const x = e.pageX - container.offsetLeft;
-  const walk = (x - startX) * 1; // adjust scroll speed if needed
+  const walk = (x - startX) * 1; // multiplier can be adjusted for speed
   container.scrollLeft = scrollLeft - walk;
 });
