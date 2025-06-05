@@ -1,49 +1,48 @@
 const container = document.querySelector('.items');
-  const cubes = document.querySelectorAll('.item');
+const cubes = document.querySelectorAll('.item');
 
-  let selected = null;
-  let offsetX = 0;
-  let offsetY = 0;
+let selectedCube = null;
+let offsetX = 0;
+let offsetY = 0;
 
-  cubes.forEach(cube => {
-    cube.addEventListener('mousedown', (e) => {
-      selected = cube;
-      const rect = cube.getBoundingClientRect();
-      const containerRect = container.getBoundingClientRect();
+// Make each cube draggable
+cubes.forEach(cube => {
+  cube.style.position = 'absolute';
+  cube.style.cursor = 'grab';
 
-      // Set initial position
-      offsetX = e.clientX - rect.left;
-      offsetY = e.clientY - rect.top;
+  // Initialize position so they're not stacked
+  const rect = cube.getBoundingClientRect();
+  cube.style.left = `${rect.left - container.getBoundingClientRect().left}px`;
+  cube.style.top = `${rect.top - container.getBoundingClientRect().top}px`;
 
-      // Ensure absolute positioning
-      cube.style.position = 'absolute';
-      cube.style.left = (rect.left - containerRect.left) + 'px';
-      cube.style.top = (rect.top - containerRect.top) + 'px';
-      cube.style.zIndex = 1000;
-      cube.style.cursor = 'grabbing';
-    });
+  cube.addEventListener('mousedown', (e) => {
+    selectedCube = cube;
+    offsetX = e.clientX - cube.getBoundingClientRect().left;
+    offsetY = e.clientY - cube.getBoundingClientRect().top;
+    cube.style.cursor = 'grabbing';
   });
+});
 
-  document.addEventListener('mousemove', (e) => {
-    if (!selected) return;
+document.addEventListener('mousemove', (e) => {
+  if (!selectedCube) return;
 
-    const containerRect = container.getBoundingClientRect();
-    const cubeRect = selected.getBoundingClientRect();
+  const containerRect = container.getBoundingClientRect();
+  const cubeRect = selectedCube.getBoundingClientRect();
 
-    let left = e.clientX - containerRect.left - offsetX;
-    let top = e.clientY - containerRect.top - offsetY;
+  let newLeft = e.clientX - containerRect.left - offsetX;
+  let newTop = e.clientY - containerRect.top - offsetY;
 
-    // Boundary checks
-    left = Math.max(0, Math.min(left, container.clientWidth - cubeRect.width));
-    top = Math.max(0, Math.min(top, container.clientHeight - cubeRect.height));
+  // Constrain within container
+  newLeft = Math.max(0, Math.min(container.clientWidth - cubeRect.width, newLeft));
+  newTop = Math.max(0, Math.min(container.clientHeight - cubeRect.height, newTop));
 
-    selected.style.left = left + 'px';
-    selected.style.top = top + 'px';
-  });
+  selectedCube.style.left = `${newLeft}px`;
+  selectedCube.style.top = `${newTop}px`;
+});
 
-  document.addEventListener('mouseup', () => {
-    if (selected) {
-      selected.style.cursor = 'grab';
-      selected = null;
-    }
-  });
+document.addEventListener('mouseup', () => {
+  if (selectedCube) {
+    selectedCube.style.cursor = 'grab';
+  }
+  selectedCube = null;
+});
